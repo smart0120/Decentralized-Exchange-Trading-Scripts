@@ -13,7 +13,7 @@ web3 = Web3(Web3.HTTPProvider("https://bsc-dataseed1.binance.org/"))
 def get_source_code(token_address):
     Eth_Api = "VFZUKK626NHN7SQTP1GAE5MK6TZN3BV2BR"  # Change this to your Etherscan API ID
     sourceCodeGetRequestURL = "https://api.bscscan.com/api?module=contract&action=getsourcecode&address=" + token_address + "&apikey=" + Eth_Api
-    response = requests.get(url=sourceCodeGetRequestURL)
+    response = requests.get(url=sourceCodeGetRequestURL, timeout=60)
     resultSourceCode = response.json()
 
     # Check if the request was successful
