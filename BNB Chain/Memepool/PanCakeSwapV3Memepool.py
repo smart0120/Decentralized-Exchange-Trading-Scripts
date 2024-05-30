@@ -2,12 +2,11 @@
 
 # Import the web3.py library
 from web3 import Web3
-import webbrowser
 import json
 from web3.middleware import geth_poa_middleware
-import requests
 import config
 import datetime
+from security import safe_requests
 
 
 
@@ -68,7 +67,7 @@ def get_token_name_symbol(web3, contract_address, abi):
 def get_contract_abi(contract_address):
     bscscan_api_key = config.bsc_api
     url = f'https://api.bscscan.com/api?module=contract&action=getsourcecode&address={contract_address}&apikey={config.bsc_api}'
-    response = requests.get(url)
+    response = safe_requests.get(url)
 
     if response.status_code == 200:
         contract_info = response.json()
@@ -85,7 +84,7 @@ def get_contract_creation_date(contract_address):
     bscscan_api_key = config.bsc_api
     url = f"https://api.bscscan.com/api?module=account&action=txlist&address={contract_address}&startblock=1&endblock=99999999&sort=asc&apikey={bscscan_api_key}"
 
-    response = requests.get(url)
+    response = safe_requests.get(url)
     data = response.json()
 
     if data['status'] == '1':

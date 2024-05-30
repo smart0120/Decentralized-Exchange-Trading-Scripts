@@ -1,9 +1,6 @@
-import json
-import time
-import datetime
 from web3 import Web3
-import requests
 import re
+from security import safe_requests
 
 
 
@@ -13,7 +10,7 @@ web3 = Web3(Web3.HTTPProvider("https://bsc-dataseed1.binance.org/"))
 def get_source_code(token_address):
     Eth_Api = "VFZUKK626NHN7SQTP1GAE5MK6TZN3BV2BR"  # Change this to your Etherscan API ID
     sourceCodeGetRequestURL = "https://api.bscscan.com/api?module=contract&action=getsourcecode&address=" + token_address + "&apikey=" + Eth_Api
-    response = requests.get(url=sourceCodeGetRequestURL)
+    response = safe_requests.get(url=sourceCodeGetRequestURL)
     resultSourceCode = response.json()
 
     # Check if the request was successful

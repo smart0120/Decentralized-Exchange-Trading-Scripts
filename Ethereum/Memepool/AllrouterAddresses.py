@@ -3,12 +3,10 @@
 #Todo create UI for this script
 
 import asyncio
-import time
 from web3 import Web3
 import json
-import requests
-import datetime
 from uniswap_universal_router_decoder import RouterCodec
+from security import safe_requests
 
 #TODO Aggregation Router 0x1111111254EEB25477B68fb85Ed929f73A960582
 
@@ -129,7 +127,7 @@ def get_contract_abi(contract_address):
     try:
         bscscan_api_key = api_key
         url = f'https://api.etherscan.io/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-        response = requests.get(url)
+        response = safe_requests.get(url)
 
         if response.status_code == 200:
             contract_info = response.json()
@@ -147,7 +145,7 @@ def get_contract_abi(contract_address):
 def get_contract_creation_date(contract_address):
     from datetime import datetime
     url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-    response = requests.get(url)
+    response = safe_requests.get(url)
     data = response.json()
 
     if data['status'] == '1':
@@ -161,7 +159,7 @@ def get_contract_creation_date(contract_address):
 
 
 def get_Days(creation_time_str):
-    from datetime import datetime, timedelta
+    from datetime import datetime
 
     creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
     current_time = datetime.utcnow()
@@ -177,7 +175,7 @@ def get_Days(creation_time_str):
 
 
 def format_time_difference(creation_time_str):
-    from datetime import datetime, timedelta
+    from datetime import datetime
 
     creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
     current_time = datetime.utcnow()

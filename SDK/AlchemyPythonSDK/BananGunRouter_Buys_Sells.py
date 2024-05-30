@@ -3,7 +3,7 @@ import json
 import websockets
 from alchemy import Alchemy, Network
 import datetime
-import requests
+from security import safe_requests
 
 alchemy_ws_url = "wss://eth-mainnet.g.alchemy.com/v2/BLHi-AZvCt6LjvO8W7nFtloBJFZa393M"
 api_key = "BLHi-AZvCt6LjvO8W7nFtloBJFZa393M"
@@ -33,7 +33,7 @@ def getTimestamp():
 def get_creation_timestamp(contract_address):
     from datetime import datetime
     url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-    response = requests.get(url)
+    response = safe_requests.get(url)
     data = response.json()
 
     if data['status'] == '1':
@@ -45,7 +45,7 @@ def get_creation_timestamp(contract_address):
     else:
         raise Exception('Error while fetching transactions: ' + data['message'])
 def calculate_time_difference(creation_time_str):
-    from datetime import datetime, timedelta
+    from datetime import datetime
 
     creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
     current_time = datetime.utcnow()
@@ -69,7 +69,7 @@ def getTotalBuys(to_address, contract_address):
     token_name= result['transfers'][0].asset
     return length, token_name
 def get_Days(creation_time_str):
-    from datetime import datetime, timedelta
+    from datetime import datetime
 
     creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
     current_time = datetime.utcnow()

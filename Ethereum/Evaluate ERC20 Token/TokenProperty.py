@@ -1,8 +1,8 @@
 import sys
 import datetime
 import requests
-import webbrowser
 from web3 import Web3
+from security import safe_requests
 
 # Constants
 ETHERSCAN_API_KEY = "QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z"
@@ -70,7 +70,7 @@ class TokenEvaluationBot:
 
     def get_deployer_address(self, contract_address):
         url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-        response = requests.get(url)
+        response = safe_requests.get(url)
         data = response.json()
 
         if data['status'] == '1':
@@ -84,7 +84,7 @@ class TokenEvaluationBot:
 
     def get_owner(self,contract_address):
         abiCodeGetRequestURL = "https://api.etherscan.io/api?module=contract&action=getabi&address=" + contract_address + "&apikey=" + ETHERSCAN_API_KEY
-        resultAbi = requests.get(url=abiCodeGetRequestURL).json()
+        resultAbi = safe_requests.get(url=abiCodeGetRequestURL).json()
         contract = self.web3.eth.contract(address=contract_address, abi=TOKEN_MODEL_ABI)
 
         if resultAbi["status"] == "1":
@@ -157,7 +157,7 @@ class TokenEvaluationBot:
     def get_creation_timestamp(self, contract_address):
         from datetime import datetime
         url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-        response = requests.get(url)
+        response = safe_requests.get(url)
         data = response.json()
 
         if data['status'] == '1':
@@ -173,7 +173,7 @@ class TokenEvaluationBot:
             raise Exception('Error while fetching transactions: ' + data['message'])
 
     def calculate_time_difference(self, creation_time_str):
-        from datetime import datetime, timedelta
+        from datetime import datetime
 
         creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
         current_time = datetime.utcnow()
@@ -187,7 +187,7 @@ class TokenEvaluationBot:
         print(f"{days} days {hours} hours {minutes} minutes ago")
 
     def lock_time_difference(self, creation_time_str):
-        from datetime import datetime, timedelta
+        from datetime import datetime
 
         creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")
         current_time = datetime.utcnow()
@@ -256,7 +256,7 @@ class TokenEvaluationBot:
         return pairReserves
 
     def lock_time_difference(self, creation_time_str):
-        from datetime import datetime, timedelta
+        from datetime import datetime
 
         try:
             creation_time = datetime.strptime(creation_time_str, "%d-%m-%Y %H:%M:%S")

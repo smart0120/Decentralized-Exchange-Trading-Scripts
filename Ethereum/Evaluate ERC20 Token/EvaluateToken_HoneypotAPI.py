@@ -1,4 +1,4 @@
-import requests
+from security import safe_requests
 
 #TODO Add additional checks based on research
 class style():  # Class of different text colours - default is white
@@ -24,7 +24,7 @@ def check_token_honeypot():
     }
 
     # Make the GET request
-    response = requests.get(url, params=params)
+    response = safe_requests.get(url, params=params)
 
     if response.status_code == 200:
         data = response.json()

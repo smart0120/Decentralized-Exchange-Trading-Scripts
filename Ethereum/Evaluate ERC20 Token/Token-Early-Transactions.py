@@ -1,7 +1,6 @@
 "Focus on buys immediately after liquitidy is added"
-
-import requests
 import json
+from security import safe_requests
 
 
 api_key = 'QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
@@ -14,7 +13,7 @@ num_wallets = int(input("Enter the number of wallets to display: "))
 url = f"https://api.etherscan.io/api?module=account&action=tokentx&contractaddress={contract_address}&apikey={api_key}"
 
 # Send a request to BscScan API and parse the JSON response
-response = requests.get(url)
+response = safe_requests.get(url)
 data = json.loads(response.text)
 
 

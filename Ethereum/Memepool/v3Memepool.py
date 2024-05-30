@@ -1,15 +1,8 @@
 
 # Import the web3.py library
 from web3 import Web3
-import webbrowser
 import datetime
-import requests
-import json
-# import sys; print(sys.path)
-import urllib.request
-from web3_input_decoder import decode_constructor, decode_function
-
-import web3_input_decoder
+from security import safe_requests
 
 
 class style():  # Class of different text colours - default is white
@@ -85,7 +78,7 @@ def get_token_name_symbol(web3, contract_address, abi):
 def get_contract_abi(contract_address):
     bscscan_api_key = api_key
     url = f'https://api.etherscan.io/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-    response = requests.get(url)
+    response = safe_requests.get(url)
 
     if response.status_code == 200:
         contract_info = response.json()
@@ -102,7 +95,7 @@ def get_contract_creation_date(contract_address):
     bscscan_api_key = api_key
     url = f"https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=1&endblock=99999999&sort=asc&apikey={bscscan_api_key}"
 
-    response = requests.get(url)
+    response = safe_requests.get(url)
     data = response.json()
 
     if data['status'] == '1':
