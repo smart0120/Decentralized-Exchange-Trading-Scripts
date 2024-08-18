@@ -62,7 +62,7 @@ def calculate_time_difference(creation_time_str):
 def get_contract_creation_date(contract_address):
     from datetime import datetime
     url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     data = response.json()
 
     if data['status'] == '1':
@@ -92,7 +92,7 @@ def get_contract_abi(contract_address):
     try:
         bscscan_api_key = 'QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
         url = f'https://api.etherscan.io/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
 
         if response.status_code == 200:
             contract_info = response.json()

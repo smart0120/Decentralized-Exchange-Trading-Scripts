@@ -19,7 +19,7 @@ num_wallets = int(input("Enter the number of Transactions to display: "))
 url = f"https://api.bscscan.com/api?module=account&action=tokentx&contractaddress={contract_address}&apikey={api_key}"
 
 # Send a request to BscScan API and parse the JSON response
-response = requests.get(url)
+response = requests.get(url, timeout=60)
 data = json.loads(response.text)
 
 if data['status'] == "1":

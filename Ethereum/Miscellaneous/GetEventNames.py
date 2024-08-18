@@ -16,7 +16,7 @@ def get_contract_abi(contract_address):
     try:
         bscscan_api_key = 'QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
         url = f'https://api.etherscan.io/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
 
         if response.status_code == 200:
             contract_info = response.json()
