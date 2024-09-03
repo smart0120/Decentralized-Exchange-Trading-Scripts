@@ -1,8 +1,8 @@
 import sys
 import datetime
-import requests
 import webbrowser
 from web3 import Web3
+from security import safe_requests
 
 # Constants
 ETHERSCAN_API_KEY = "QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z"
@@ -70,7 +70,7 @@ class TokenEvaluationBot:
 
     def get_deployer_address(self, contract_address):
         url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-        response = requests.get(url)
+        response = safe_requests.get(url)
         data = response.json()
 
         if data['status'] == '1':
@@ -84,7 +84,7 @@ class TokenEvaluationBot:
 
     def get_owner(self,contract_address):
         abiCodeGetRequestURL = "https://api.etherscan.io/api?module=contract&action=getabi&address=" + contract_address + "&apikey=" + ETHERSCAN_API_KEY
-        resultAbi = requests.get(url=abiCodeGetRequestURL).json()
+        resultAbi = safe_requests.get(url=abiCodeGetRequestURL).json()
         contract = self.web3.eth.contract(address=contract_address, abi=TOKEN_MODEL_ABI)
 
         if resultAbi["status"] == "1":
@@ -157,7 +157,7 @@ class TokenEvaluationBot:
     def get_creation_timestamp(self, contract_address):
         from datetime import datetime
         url = f'https://api.etherscan.io/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey=QSD4D9KG1NYTX3Y6CPAR62G9FBW16UZ81Z'
-        response = requests.get(url)
+        response = safe_requests.get(url)
         data = response.json()
 
         if data['status'] == '1':
@@ -231,7 +231,7 @@ class TokenEvaluationBot:
         owner = self.get_owner(contract_address)
         #deployer = self.get_deployer_address(contract_address)
 
-        response = requests.get("https://api.honeypot.is/v2/IsHoneypot", params={"address": contract_address})
+        response = safe_requests.get("https://api.honeypot.is/v2/IsHoneypot", params={"address": contract_address})
         if response.status_code == 200:
             data = response.json()
         simulation_Success = data['simulationSuccess']

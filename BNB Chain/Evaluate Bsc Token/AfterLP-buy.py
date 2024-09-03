@@ -5,8 +5,8 @@ You just have to know what to fine
 This script can help you spot good wallets to follow.
 
 """
-import requests
 import json
+from security import safe_requests
 
 
 api_key = 'KFEM9CQIBQVGZWTDGW5VDZGSM5ZYVGJ6KR'
@@ -19,7 +19,7 @@ num_wallets = int(input("Enter the number of Transactions to display: "))
 url = f"https://api.bscscan.com/api?module=account&action=tokentx&contractaddress={contract_address}&apikey={api_key}"
 
 # Send a request to BscScan API and parse the JSON response
-response = requests.get(url)
+response = safe_requests.get(url)
 data = json.loads(response.text)
 
 if data['status'] == "1":

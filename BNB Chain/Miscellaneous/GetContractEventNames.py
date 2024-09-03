@@ -1,6 +1,6 @@
 import web3
 from web3 import Web3
-import requests
+from security import safe_requests
 
 contract_abi = "contract_abi_string"
 
@@ -14,7 +14,7 @@ def get_contract_abi(contract_address):
     try:
         bscscan_api_key = 'YJ1VVGT761NZBN6RTC5JWPTZ511GN4VHGT'
         url = f'https://api.bscscan.com/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-        response = requests.get(url)
+        response = safe_requests.get(url)
 
         if response.status_code == 200:
             contract_info = response.json()
