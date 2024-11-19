@@ -86,7 +86,7 @@ def get_TokenMetaData(token_address):
     url = "https://api.honeypot.is/v2/IsHoneypot"
 
     params = {"address": token_address}
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=60)
     if response.status_code==200:
         data = response.json()
         token_name = data['token']['name']
@@ -103,7 +103,7 @@ def get_creation_timestamp(token_address):
     url = "https://api.honeypot.is/v2/IsHoneypot"
 
     params = {"address": token_address}
-    response = requests.get(url, params=params)
+    response = requests.get(url, params=params, timeout=60)
     if response.status_code == 200:
         data = response.json()
         creation_timestamp = int(data['pair']['createdAtTimestamp'])

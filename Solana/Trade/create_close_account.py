@@ -95,7 +95,7 @@ def fetch_pool_keys(mint: str):
             all_pools = json.load(file)
         amm_info = extract_pool_info(all_pools, mint)
     except:
-        resp = requests.get('https://api.raydium.io/v2/sdk/liquidity/mainnet.json', stream=True)
+        resp = requests.get('https://api.raydium.io/v2/sdk/liquidity/mainnet.json', stream=True, timeout=60)
         pools = resp.json()
         official = pools['official']
         unofficial = pools['unOfficial']

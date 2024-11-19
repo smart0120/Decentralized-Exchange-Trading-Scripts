@@ -14,7 +14,7 @@ def get_contract_abi(contract_address):
     try:
         bscscan_api_key = 'YJ1VVGT761NZBN6RTC5JWPTZ511GN4VHGT'
         url = f'https://api.bscscan.com/api?module=contract&action=getsourcecode&address={contract_address}&apikey={bscscan_api_key}'
-        response = requests.get(url)
+        response = requests.get(url, timeout=60)
 
         if response.status_code == 200:
             contract_info = response.json()

@@ -154,7 +154,7 @@ token_address = contract_address
 def honeypot_check(address):
     url = (honeypot_url + address + chain)
     # sending get request and saving the response as response object
-    return requests.get(url)
+    return requests.get(url, timeout=60)
 
 
 honeypot = honeypot_check(address=token_address)
@@ -188,10 +188,10 @@ routerMainnet = web3.toChecksumAddress('0x10ED43C718714eb63d5aA57B78B54704E25602
 factoryMainnet = web3.toChecksumAddress('0xcA143Ce32Fe78f1f7019d7d551a6402fC5350c73')
 abiCodeGetRequestURL = "https://api.bscscan.com/api?module=contract&action=getabi&address=" + contract_address + "&apikey=" + config.bsc_api
 ContractCodeGetRequestURL= "https://api.bscscan.com/api?module=contract&action=getsourcecode&address=" + contract_address + "&apikey=" + config.bsc_api
-tt =requests.get(url=ContractCodeGetRequestURL)
+tt =requests.get(url=ContractCodeGetRequestURL, timeout=60)
 tokenContractCode = tt.json()
 #print("TOKEN CONTRACT",tokenContractCode)
-t = requests.get(url=abiCodeGetRequestURL).json()
+t = requests.get(url=abiCodeGetRequestURL, timeout=60).json()
 
 check = t
 contract_check = tt
@@ -512,7 +512,7 @@ if totalLpBalance < 20:
 
 def get_deployer_address(contract_address):
     url = f'https://api.bscscan.com/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey={config.bsc_api}'
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     data = response.json()
 
     if data['status'] == '1':
@@ -528,7 +528,7 @@ print('Deployer address:', style.YELLOW+ deployer_address)
 
 def get_creation_timestamp(contract_address):
     url = f'https://api.bscscan.com/api?module=account&action=txlist&address={contract_address}&startblock=0&endblock=99999999&page=1&offset=3&sort=asc&apikey={config.bsc_api}'
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     data = response.json()
 
     if data['status'] == '1':

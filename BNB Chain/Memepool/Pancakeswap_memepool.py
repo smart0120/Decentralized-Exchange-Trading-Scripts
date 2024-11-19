@@ -57,7 +57,7 @@ def get_token_name_symbol(web3, contract_address, abi):
 def get_contract_abi(contract_address):
     bscscan_api_key = config.bsc_api
     url = f'https://api.bscscan.com/api?module=contract&action=getsourcecode&address={contract_address}&apikey={config.bsc_api}'
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
 
     if response.status_code == 200:
         contract_info = response.json()
@@ -77,7 +77,7 @@ def get_contract_creation_date(contract_address):
     bscscan_api_key = config.bsc_api
 
     url = f"https://api.bscscan.com/api?module=account&action=txlist&address={contract_address}&startblock=1&endblock=99999999&sort=asc&apikey={bscscan_api_key}"
-    response = requests.get(url)
+    response = requests.get(url, timeout=60)
     data = response.json()
 
     if data['status'] == '1':
