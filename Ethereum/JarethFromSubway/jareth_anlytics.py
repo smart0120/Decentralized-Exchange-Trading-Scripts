@@ -3,12 +3,12 @@ import webbrowser
 from web3 import Web3
 from alchemy import Alchemy, Network
 import datetime
-import requests
 import os
 from queue import Queue
 import threading
 
 from web3.exceptions import TransactionNotFound
+from security import safe_requests
 
 
 alchemy_ws_url = "wss://eth-mainnet.g.alchemy.com/v2/BLHi-AZvCt6LjvO8W7nFtloBJFZa393M"
@@ -86,7 +86,7 @@ def get_TokenMetaData(token_address):
     url = "https://api.honeypot.is/v2/IsHoneypot"
 
     params = {"address": token_address}
-    response = requests.get(url, params=params)
+    response = safe_requests.get(url, params=params)
     if response.status_code==200:
         data = response.json()
         token_name = data['token']['name']
@@ -103,7 +103,7 @@ def get_creation_timestamp(token_address):
     url = "https://api.honeypot.is/v2/IsHoneypot"
 
     params = {"address": token_address}
-    response = requests.get(url, params=params)
+    response = safe_requests.get(url, params=params)
     if response.status_code == 200:
         data = response.json()
         creation_timestamp = int(data['pair']['createdAtTimestamp'])
