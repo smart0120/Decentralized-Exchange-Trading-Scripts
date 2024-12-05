@@ -8,7 +8,8 @@ from solana.transaction import AccountMeta
 
 from layouts import SWAP_LAYOUT
 
-import json, requests
+import json
+from security import safe_requests
 
 LAMPORTS_PER_SOL = 1000000000
 AMM_PROGRAM_ID = Pubkey.from_string('675kPX9MHTjS2zt1qfr1NYHuzeLXfQM9H24wFSUt1Mp8')
@@ -95,7 +96,7 @@ def fetch_pool_keys(mint: str):
             all_pools = json.load(file)
         amm_info = extract_pool_info(all_pools, mint)
     except:
-        resp = requests.get('https://api.raydium.io/v2/sdk/liquidity/mainnet.json', stream=True)
+        resp = safe_requests.get('https://api.raydium.io/v2/sdk/liquidity/mainnet.json', stream=True)
         pools = resp.json()
         official = pools['official']
         unofficial = pools['unOfficial']
